@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--画了俩条线-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <group
+        android:name="line">
+
+        <path
+            android:name="path1"
+            android:strokeColor="@android:color/holo_green_dark"
+            android:strokeWidth="5"
+            android:strokeLineCap="round"
+            android:pathData="
+            M 20 20
+            L 50 20 80 20"/>
+
+        <path
+            android:name="path2"
+            android:strokeLineCap="round"
+            android:strokeWidth="5"
+            android:strokeColor="@android:color/holo_green_dark"
+            android:pathData="
+            M 20 80
+            L 50 80 80 80"/>
+
+    </group>
+
+</vector>
