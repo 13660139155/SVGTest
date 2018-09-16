@@ -10,19 +10,34 @@ import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageView iv1;
+    ImageView ivPath, ivSystem, ivSearch;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        iv1 = findViewById(R.id.iv_1);
-        iv1.setOnClickListener(new View.OnClickListener() {
+        ivPath = findViewById(R.id.iv_path);
+        ivSystem = findViewById(R.id.iv_system);
+        ivSearch = findViewById(R.id.iv_search);
+        Drawable drawable = ivSystem.getDrawable();
+        if(drawable instanceof Animatable){
+            ((Animatable)drawable).start();
+        }
+        ivPath.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Drawable drawable = iv1.getDrawable();
+                Drawable drawable = ivPath.getDrawable();
                 if(drawable instanceof Animatable){
                     ((Animatable)drawable).start();
+                }
+            }
+        });
+        ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ivSearch.getDrawable() instanceof Animatable){
+                    ((Animatable)ivSearch.getDrawable()).start();
                 }
             }
         });
