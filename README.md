@@ -282,8 +282,8 @@ path2的动画代码如下； <br>
             }
         });
 ```
-这样俩个path就实现了动画效果，如图：<br>
-<iframe height=100 width=100 src="https://github.com/13660139155/SVGTest/raw/master/gif/pathGif.gif"> <br>
+这样俩个path就实现了动画效果，如图：<br> <br>
+![pathGif](https://github.com/13660139155/SVGTest/blob/master/gif/pathGif.gif)
 ****
 在本文源码中还有俩个动画，就不贴代码了
-<iframe height=500 width=500 src="https://github.com/13660139155/SVGTest/raw/master/gif/systemGif.gif">   
+![systemGif](https://github.com/13660139155/SVGTest/blob/master/gif/systemGif.gif)
