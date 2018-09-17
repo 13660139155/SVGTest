@@ -67,21 +67,22 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 * M <br>
 类似Android绘图中path类的moveTo方法，即将画笔移动到某一点但并没有发生绘制动作，下面配合L进行讲解
 ***
-* L
+* L <br>
+画一条直线
 ```xml
  <path
        ...省略一些代码
        android:pathData="M 20 50 L 80 50"/>
 ```
-上面表示把画笔放在（20,50）位置，连直线到80，50点 <br>
 ![lineImage](https://github.com/13660139155/SVGTest/raw/master/image/lineImage.png)
+<br> 上面表示把画笔放在（20,50）位置，连直线到80，50点 <br>
 同时L后面还可以跟H或V指令来绘制水平、竖直线，后面的参数是x坐标（H指令）或y坐标（V指令）,如下
 ```xml
 <path
         ...省略一些代码
         android:pathData="M 20 50 L 80 50 V 80 H 20"/>
 ```
-![lineImageVH](https://github.com/13660139155/SVGTestrawmaster/image/lineImageVH.png)
+![lineImageVH](https://github.com/13660139155/SVGTest/raw/master/image/lineImageVH.png)
 ***
 * A <br>
 绘制一段弧线，且弧线不允许闭合，可以把弧线想象成椭圆的某一段，A指令有以下7个参数：
@@ -89,7 +90,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 2. XROTATION 指椭圆的X轴与水平方向的顺时针方向夹角，可以想象成一个水平的椭圆绕中心点顺时针旋转XRORATION的额角度
 3. FLAG1 只有俩个值，1表示大角度弧线，0表示小角度弧线
 4. FLAG2 只有俩个值，1为顺时针，0反之
-5. X，Y 为终点坐标 <br>
+5. X，Y 为终点坐标 <br> <br>
 看代码：
 ```xml
 <path
@@ -101,7 +102,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 再看图：<br>
 ![ellipticalImage](https://github.com/13660139155/SVGTest/raw/master/image/ellipticalImage.png)
  <br> **图一** <br><br>
-上面表示把画笔放在（50,50）位置；30, 15分别表示椭圆的x，y半轴大小；0表示x轴不旋转；1表示用大角度弧线绘制；0表示顺时针：1，0表示相对与以（50，50）为起始点的坐标轴的坐标，因为a是小写 <br>
+上面表示把画笔放在（50,50）位置；30, 15分别表示椭圆的x，y半轴大小；0表示x轴不旋转；1表示用大角度弧线绘制；0表示顺时针：1，0表示相对与以（50，50）为起始点的坐标轴的坐标，因为a是小写 <br> <br>
 再看一段代码：
 ```xml
  <path
@@ -113,7 +114,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 再看图：<br>
 ![ellipticalImage2](https://github.com/13660139155/SVGTest/raw/master/image/ellipticalImage2.png)
  <br> **图二** <br><br>
-可以看到这里显示了一个半圆，因为这里的X，Y轴大小相等 <br>
+可以看到这里显示了一个半圆，因为这里的X，Y轴大小相等 <br> <br>
 再看一段代码：
 ```xml
  <path
@@ -124,7 +125,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 再看图：<br>
 ![ellipticalImage3](https://github.com/13660139155/SVGTest/raw/master/image/ellipticalImage3.png)
  <br> **图三** <br><br>
-这里把终点x轴坐标改为40，图中显示了圆的大部分 <br>
+这里把终点x轴坐标改为40，图中显示了圆的大部分 <br> <br>
 看一段代码：
 ```xml
  <path
@@ -135,7 +136,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 再看图：<br>
 ![ellipticalImage4](https://github.com/13660139155/SVGTest/raw/master/image/ellipticalImage4.png)
  <br> **图四** <br><br>
-这里把FLAG1改为0，与图三相比，发现弧度变小了，因为用小弧度画 <br>
+这里把FLAG1改为0，与图三相比，发现弧度变小了，因为用小弧度画 <br> <br>
 看一段代码：
 ```xml
   <path
@@ -152,4 +153,4 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 关于贝塞尔指令的，这里就不过多介绍了，放出几个链接供大家学习：<br>
 [贝塞尔曲线初探](http://www.cnblogs.com/jay-dong/archive/2012/09/26/2704188.html) <br>
 [SVG讲解](https://github.com/OCNYang/Android-Animation-Set/wiki/SVG-讲解) <br>
-    
+***
