@@ -12,10 +12,9 @@
 
         <path
             android:layout_height="wrap_content"
-            android:strokeColor="@android:color/holo_blue_light"
-            android:strokeWidth="2"
+            android:fillColor="@android:color/holo_blue_light"
             android:pathData="M 25 50
-                              a 25 25 2 1 0 50 0 Z " />
+                              a 25 25 0 0 1 40 0" />
 
     </group>
 
