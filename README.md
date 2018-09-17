@@ -154,3 +154,132 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 [贝塞尔曲线初探](http://www.cnblogs.com/jay-dong/archive/2012/09/26/2704188.html) <br>
 [SVG讲解](https://github.com/OCNYang/Android-Animation-Set/wiki/SVG-讲解) <br>
 ***
+Coogle在Android5.0X中提供了俩个API来帮助支持SVG：<br>
+* VectorDrawable
+* AnimatedVectorDrawable
+其中VectorDrawable用于创建XML文件的SVG图形即前面的vector标签，并结合AnimatedVectorDrawable来完成动画效果
+***
+## VectorDrawable
+在XML中创建一个静态的XMLSVG图形，通常会形成如下的树形结构: <br>
+![tree](https://github.com/13660139155/SVGTest/raw/master/image/tree.png)
+<br> **树形结构** <br> <br>
+path是树形结构中最小的单位，而通过Group可以将不同的path进行组合，接下来我们使用vector标签创建SVG图形，代码如下： <br>
+```xml
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <group
+        android:name="line">
+        <path
+            android:name="path1"
+            android:strokeColor="@android:color/holo_green_dark"
+            android:strokeWidth="5"
+            android:strokeLineCap="round"
+            android:pathData="
+            M 20 20
+            L 50 20 80 20"/>
+        <path
+            android:name="path2"
+            android:strokeLineCap="round"
+            android:strokeWidth="5"
+            android:strokeColor="@android:color/holo_green_dark"
+            android:pathData="
+            M 20 80
+            L 50 80 80 80"/>
+    </group>
+</vector>
+```
+上面的代码画了俩条线，每条线由三个点控制，形成初始状态，下面立马通过AnimatedVectorDrawable来实现动画效果
+## AnimatedVectorDrawable
+AnimatedVectorDrawable就是通过连接静态的VectorDrawable和动态的objectAninmator来为VectorDrawable提供动画效果，分几个步骤来使用：
+1. 在XML中通过animated-vector标签来声明对AnimatedVectorDrawable的使用，并指定它的drawable属性，target标签中的name属性和animation属性 <br>
+代码如下：<br>
+```xml
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/svg_path">
+    <target
+        android:animation="@animator/anim_path1"
+        android:name="path1"/>
+    <target
+        android:animation="@animator/anim_path2"
+        android:name="path2"/>
+</animated-vector>
+```
+android:drawable="@drawable/svg_path"指定了上面创建的VectorDrawable即画的俩条线；target标签中的name指定了要作用动画的path或Group的name, 即俩者的name要保持一致，这样系统才能找到要实现动画的元素;taret标签中的animation指定了要作用的都动画，在本例中，path1的动画代码如下: <br>
+```xml
+<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="500"
+    android:propertyName="pathData"
+    android:valueType="pathType"
+    android:valueFrom=
+    "M 20 20
+     L 50 20 80 20"
+    android:valueTo=
+    "M 20 20
+     L 50 50 80 20"
+    android:interpolator="@android:anim/bounce_interpolator">
+</objectAnimator>
+```
+path2的动画代码如下； <br>
+```xml 
+<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="500"
+    android:propertyName="pathData"
+    android:valueType="pathType"
+    android:valueFrom=
+    "M 20 80
+     L 50 80 80 80"
+    android:valueTo=
+    "M 20 80
+     L 50 50 80 80"
+    android:interpolator="@android:anim/bounce_interpolator">
+</objectAnimator>
+```
+以上的俩个动画代码中都定义了一个pathType的属性动画，并指定了变换的初始值分别为：<br>
+```xml
+//path1
+ android:valueFrom=
+    "M 20 20
+     L 50 20 80 20"
+//path2
+ android:valueFrom=
+    "M 20 80
+     L 50 80 80 80"
+```
+结束值为: <br>
+```xml
+//path1
+ android:valueTo=
+    "M 20 20
+     L 50 50 80 20"
+//path2
+  android:valueTo=
+    "M 20 80
+     L 50 50 80 80"
+```
+这里要注意的是，SVG的路径变换属性动画中，变换前后的节点数必须相同，这也是为什么前面需要使用三个点来绘制一条直线，因为后面需要中点进行动画变换 <br>
+2. 把AnimatedVectorDrawable的XML文件设置给ImageView
+```xml
+ <ImageView
+        android:id="@+id/iv_path"
+        android:src="@drawable/svg_path_anim"
+        .../>
+```
+3. 代码中启动AnimatedVectorDrawable动画
+```xml
+ ImageView ivPath;
+ ...
+ ivPath = findViewById(R.id.iv_path);
+        ivPath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drawable drawable = ivPath.getDrawable();
+                if(drawable instanceof Animatable){
+                    ((Animatable)drawable).start();
+                }
+            }
+        });
+```
+这样俩个path就实现了动画效果，如图：<br>
