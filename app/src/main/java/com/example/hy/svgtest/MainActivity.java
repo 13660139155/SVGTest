@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         if(drawable instanceof Animatable){
             ((Animatable)drawable).start();
         }
+        ivPath = findViewById(R.id.iv_path);
         ivPath.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
