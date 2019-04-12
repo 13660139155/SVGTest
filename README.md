@@ -4,8 +4,9 @@ Google 在Android5.X中增加了对SVG矢量图形的支持，可以用来创建
 * 使用XML格式定义图形
 * 图像在放大或改变尺寸的情况下图片质量不会有所损失
 * android中使用vector标签表示SVG
-___
+
 与bitmap相比，SVG最大的优点是放大不会失真，而bitmap需要为不同的分辨率准备很多套图标，而SVG则不需要，前面说了SVG要用vector表示，我们先来看看vector标签中属性的含义。
+
 ## vector的各个属性是什么意义？
 ```xml
 <vector xmlns:android="http://schemas.android.com/apk/res/android"  //命名空间
@@ -45,7 +46,7 @@ ___
 ```
 ***
 下面就来讲解path标签，path标签是用来创建SVG的，就像用指令控制一只画笔，path标签所支持的指令有以下几种。
-## \<path>指令
+## \<path>标签的绘图指令
     M = moveto(M X, Y): 将画笔移动到指定的位置，但未发生绘制
     L = lineto(L X, Y): 画直线到指定位置
     H = horizontal(H X): 画水平线到指定X坐标
@@ -62,21 +63,19 @@ ___
 3. 指令和数据间的空格可以省略，可以用逗号隔开，也可以用空格
 4. 同一指令出现多次可以只用一个
 ***
-SVG的指令参数非常复杂，但是在android中，不需要太多太复杂的SVG图形，所以我们先来掌握几个常用的指令，在以后的学习中，读者将会慢慢掌握更多的SVG绘制技巧和方法
-## SVG常用指令
-* M <br>
-类似Android绘图中path类的moveTo方法，即将画笔移动到某一点但并没有发生绘制动作，下面配合L进行讲解
+SVG的指令参数非常复杂，但是在android中，不需要太多太复杂的SVG图形，所以我们先来掌握几个常用的指令，在以后的学习中，读者将会慢慢掌握更多的SVG绘制技巧和方法。
+### 常用指令
+* M ：类似Android绘图中path类的moveTo方法，即将画笔移动到某一点但并没有发生绘制动作，下面配合L进行讲解
 ***
-* L <br>
-画一条直线
+* L ：画一条直线
 ```xml
  <path
        ...省略一些代码
        android:pathData="M 20 50 L 80 50"/>
 ```
 ![lineImage](https://github.com/13660139155/SVGTest/raw/master/image/lineImage.png)
-<br> 上面表示把画笔放在（20,50）位置，连直线到80，50点 <br>
-同时L后面还可以跟H或V指令来绘制水平、竖直线，后面的参数是x坐标（H指令）或y坐标（V指令）,如下
+<br> 上面表示把画笔放在（20,50）位置，连直线到80，50点。 <br>
+同时L后面还可以跟H或V指令来绘制水平、竖直线，后面的参数是x坐标（H指令）或y坐标（V指令）,如下：
 ```xml
 <path
         ...省略一些代码
@@ -84,8 +83,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 ```
 ![lineImageVH](https://github.com/13660139155/SVGTest/raw/master/image/lineImageVH.png)
 ***
-* A <br>
-绘制一段弧线，且弧线不允许闭合，可以把弧线想象成椭圆的某一段，A指令有以下7个参数：
+* A ：绘制一段弧线，且弧线不允许闭合，可以把弧线想象成椭圆的某一段，A指令有以下7个参数：
 1. RX，RY 指所在椭圆的半轴大小
 2. XROTATION 指椭圆的X轴与水平方向的顺时针方向夹角，可以想象成一个水平的椭圆绕中心点顺时针旋转XRORATION的额角度
 3. FLAG1 只有俩个值，1表示大角度弧线，0表示小角度弧线
@@ -102,7 +100,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 再看图：<br>
 ![ellipticalImage](https://github.com/13660139155/SVGTest/raw/master/image/ellipticalImage.png)
  <br> **图一** <br><br>
-上面表示把画笔放在（50,50）位置；30, 15分别表示椭圆的x，y半轴大小；0表示x轴不旋转；1表示用大角度弧线绘制；0表示顺时针：1，0表示相对与以（50，50）为起始点的坐标轴的坐标，因为a是小写 <br> <br>
+上面表示把画笔放在（50,50）位置；30, 15分别表示椭圆的x，y半轴大小；0表示x轴不旋转；1表示用大角度弧线绘制；0表示顺时针：1，0表示相对与以（50，50）为起始点的坐标轴的坐标，因为a是小写。 <br> <br>
 再看一段代码：
 ```xml
  <path
@@ -114,7 +112,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 再看图：<br>
 ![ellipticalImage2](https://github.com/13660139155/SVGTest/raw/master/image/ellipticalImage2.png)
  <br> **图二** <br><br>
-可以看到这里显示了一个半圆，因为这里的X，Y轴大小相等 <br> <br>
+可以看到这里显示了一个半圆，因为这里的X，Y轴大小相等。 <br> <br>
 再看一段代码：
 ```xml
  <path
@@ -125,7 +123,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 再看图：<br>
 ![ellipticalImage3](https://github.com/13660139155/SVGTest/raw/master/image/ellipticalImage3.png)
  <br> **图三** <br><br>
-这里把终点x轴坐标改为40，图中显示了圆的大部分 <br> <br>
+这里把终点x轴坐标改为40，图中显示了圆的大部分。 <br> <br>
 看一段代码：
 ```xml
  <path
@@ -136,7 +134,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 再看图：<br>
 ![ellipticalImage4](https://github.com/13660139155/SVGTest/raw/master/image/ellipticalImage4.png)
  <br> **图四** <br><br>
-这里把FLAG1改为0，与图三相比，发现弧度变小了，因为用小弧度画 <br> <br>
+这里把FLAG1改为0，与图三相比，发现弧度变小了，因为用小弧度画。 <br> <br>
 看一段代码：
 ```xml
   <path
@@ -147,19 +145,20 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 再看图：<br>
 ![ellipticalImage5](https://github.com/13660139155/SVGTest/raw/master/image/ellipticalImage5.png)
  <br> **图五** <br><br>
-这里把FLAG2改为1，与图四相比，图形翻转了，因为画的方向不一样了 <br>
-    把A指令的几个图结合看一下，就能弄懂A这个指令了
+这里把FLAG2改为1，与图四相比，图形翻转了，因为画的方向不一样了，把A指令的几个图结合看一下，就能弄懂A这个指令了。
 ***
 关于贝塞尔指令的，这里就不过多介绍了，放出几个链接供大家学习：<br>
 [贝塞尔曲线初探](http://www.cnblogs.com/jay-dong/archive/2012/09/26/2704188.html) <br>
 [SVG讲解](https://github.com/OCNYang/Android-Animation-Set/wiki/SVG-讲解) <br>
 ***
+## VectorDrawable和AnimatedVectorDrawable
+
 Coogle在Android5.0X中提供了俩个API来帮助支持SVG：<br>
 * VectorDrawable
 * AnimatedVectorDrawable
-其中VectorDrawable用于创建XML文件的SVG图形即前面的vector标签，并结合AnimatedVectorDrawable来完成动画效果
+其中VectorDrawable用于创建XML文件的SVG图形即前面的vector标签，并结合AnimatedVectorDrawable来完成动画效果。
 ***
-## VectorDrawable
+### 1、VectorDrawable
 在XML中创建一个静态的XMLSVG图形，通常会形成如下的树形结构: <br>
 ![tree](https://github.com/13660139155/SVGTest/raw/master/image/tree.png)
 <br> **树形结构** <br> <br>
@@ -191,10 +190,10 @@ path是树形结构中最小的单位，而通过Group可以将不同的path进�
     </group>
 </vector>
 ```
-上面的代码画了俩条线，每条线由三个点控制，形成初始状态，下面立马通过AnimatedVectorDrawable来实现动画效果
-## AnimatedVectorDrawable
+上面的代码画了俩条线，每条线由三个点控制，形成初始状态，下面立马通过AnimatedVectorDrawable来实现动画效果。
+### 2、AnimatedVectorDrawable
 AnimatedVectorDrawable就是通过连接静态的VectorDrawable和动态的objectAninmator来为VectorDrawable提供动画效果，分几个步骤来使用：
-1. 在XML中通过animated-vector标签来声明对AnimatedVectorDrawable的使用，并指定它的drawable属性，target标签中的name属性和animation属性 <br>
+* 1. 在XML中通过animated-vector标签来声明对AnimatedVectorDrawable的使用，并指定它的drawable属性，target标签中的name属性和animation属性 <br>
 代码如下：<br>
 ```xml
 <animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
@@ -207,7 +206,8 @@ AnimatedVectorDrawable就是通过连接静态的VectorDrawable和动态的objec
         android:name="path2"/>
 </animated-vector>
 ```
-android:drawable="@drawable/svg_path"指定了上面创建的VectorDrawable即画的俩条线；target标签中的name指定了要作用动画的path或Group的name, 即俩者的name要保持一致，这样系统才能找到要实现动画的元素;taret标签中的animation指定了要作用的都动画，在本例中，path1的动画代码如下: <br>
+android:drawable="@drawable/svg_path"指定了上面创建的VectorDrawable即画的俩条线；target标签中的name指定了要作用动画的path或Group的name, 即俩者的name要保持一致，这样系统才能找到要实现动画的元素;taret标签中的animation指定了要作用的都动画。<br>
+在本例中，path1的动画代码如下: <br>
 ```xml
 <objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
     android:duration="500"
@@ -259,15 +259,15 @@ path2的动画代码如下； <br>
     "M 20 80
      L 50 50 80 80"
 ```
-这里要注意的是，SVG的路径变换属性动画中，变换前后的节点数必须相同，这也是为什么前面需要使用三个点来绘制一条直线，因为后面需要中点进行动画变换 <br>
-2. 把AnimatedVectorDrawable的XML文件设置给ImageView
+这里要注意的是，SVG的路径变换属性动画中，变换前后的节点数必须相同，这也是为什么前面需要使用三个点来绘制一条直线，因为后面需要中点进行动画变换。 <br>
+* 2. 把AnimatedVectorDrawable的XML文件设置给ImageView
 ```xml
  <ImageView
         android:id="@+id/iv_path"
         android:src="@drawable/svg_path_anim"
         .../>
 ```
-3. 代码中启动AnimatedVectorDrawable动画
+* 3. 代码中启动AnimatedVectorDrawable动画
 ```xml
  ImageView ivPath;
  ...
