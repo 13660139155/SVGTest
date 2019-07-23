@@ -10,7 +10,7 @@
         android:name="test"
         android:rotation="0">
 
-        <path
+        <pathData
             android:layout_height="wrap_content"
             android:fillColor="@android:color/holo_blue_light"
             android:pathData="M 25 50

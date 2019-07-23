@@ -12,7 +12,6 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView ivPath, ivSystem, ivSearch;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

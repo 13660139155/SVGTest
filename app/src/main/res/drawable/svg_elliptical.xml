@@ -5,7 +5,7 @@
     android:viewportWidth="100"
     android:viewportHeight="100">
 
-    <path
+    <pathData
         android:name="elliptical"
         android:fillColor="@android:color/holo_purple"
         android:pathData="

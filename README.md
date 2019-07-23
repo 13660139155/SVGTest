@@ -17,7 +17,7 @@ Google 在Android5.X中增加了对SVG矢量图形的支持，可以用来创建
     android:alpha="0.2"     //这个是整个图像的透明度,取值范围0到1
     >
 
-    <group      //这个标签中可以放入若干个<path/>标签,并给它们设置一些共同的属性
+    <group      //这个标签中可以放入若干个<pathData/>标签,并给它们设置一些共同的属性
         android:name="group_name"   //这个name很有用,在设置objectAnimator的时候用来区分给那个部分施加动画
         android:pivotY="50"     //这个设置这个group的中心点的X坐标,取值范围为0到100,在做rotation时有用
         android:pivotX="50"     //这个设置这个group的中心点的Y坐标,取值范围为0到100,在做rotation时有用
@@ -27,7 +27,7 @@ Google 在Android5.X中增加了对SVG矢量图形的支持，可以用来创建
         android:scaleX="0.5"    //横坐标的缩放比例 , 取值1表示100%
         android:scaleY="0.3">   //纵坐标的缩放比例,取值0.5表示50%,取值1.5表示150%
 
-        <path   //这个标签是重头戏,矢量图绘制的路径
+        <pathData   //这个标签是重头戏,矢量图绘制的路径
             android:name="path_name"    //为这个path标记的名字,在使用objectAnimator的时候用来区分给哪个部分施加动画
             android:pathData="m 0,0 L50,0 L100,100 L0,100 z"    //这个是SVG的语法,下面讲
             android:fillColor="@color/red"  //定义填充图形的颜色，如果没有定义则不填充路径
@@ -46,7 +46,7 @@ Google 在Android5.X中增加了对SVG矢量图形的支持，可以用来创建
 ```
 ***
 下面就来讲解path标签，path标签是用来创建SVG的，就像用指令控制一只画笔，path标签所支持的指令有以下几种。
-## \<path>标签的绘图指令
+## \<pathData>标签的绘图指令
     M = moveto(M X, Y): 将画笔移动到指定的位置，但未发生绘制
     L = lineto(L X, Y): 画直线到指定位置
     H = horizontal(H X): 画水平线到指定X坐标
@@ -69,7 +69,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 ***
 * L ：画一条直线
 ```xml
- <path
+ <pathData
        ...省略一些代码
        android:pathData="M 20 50 L 80 50"/>
 ```
@@ -77,7 +77,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 <br> 上面表示把画笔放在（20,50）位置，连直线到80，50点。 <br>
 同时L后面还可以跟H或V指令来绘制水平、竖直线，后面的参数是x坐标（H指令）或y坐标（V指令）,如下：
 ```xml
-<path
+<pathData
         ...省略一些代码
         android:pathData="M 20 50 L 80 50 V 80 H 20"/>
 ```
@@ -91,7 +91,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 5. X，Y 为终点坐标 <br> <br>
 看代码：
 ```xml
-<path
+<pathData
         ...省略一些代码
         android:pathData="
         M 50 50
@@ -103,7 +103,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 上面表示把画笔放在（50,50）位置；30, 15分别表示椭圆的x，y半轴大小；0表示x轴不旋转；1表示用大角度弧线绘制；0表示顺时针：1，0表示相对与以（50，50）为起始点的坐标轴的坐标，因为a是小写。 <br> <br>
 再看一段代码：
 ```xml
- <path
+ <pathData
       ...省略一些代码
       android:pathData="
       M 25 50
@@ -115,7 +115,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 可以看到这里显示了一个半圆，因为这里的X，Y轴大小相等。 <br> <br>
 再看一段代码：
 ```xml
- <path
+ <pathData
        ...省略一些代码
        android:pathData="M 25 50
        a 25 25 0 1 0 40 0" />
@@ -126,7 +126,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 这里把终点x轴坐标改为40，图中显示了圆的大部分。 <br> <br>
 看一段代码：
 ```xml
- <path
+ <pathData
         ...省略一些代码
         android:pathData="M 25 50
         a 25 25 0 0 0 40 0" />
@@ -137,7 +137,7 @@ SVG的指令参数非常复杂，但是在android中，不需要太多太复杂�
 这里把FLAG1改为0，与图三相比，发现弧度变小了，因为用小弧度画。 <br> <br>
 看一段代码：
 ```xml
-  <path
+  <pathData
         ...省略一些代码  
         android:pathData="M 25 50
         a 25 25 0 0 1 40 0" />
@@ -171,7 +171,7 @@ path是树形结构中最小的单位，而通过Group可以将不同的path进�
     android:viewportHeight="100">
     <group
         android:name="line">
-        <path
+        <pathData
             android:name="path1"
             android:strokeColor="@android:color/holo_green_dark"
             android:strokeWidth="5"
@@ -179,7 +179,7 @@ path是树形结构中最小的单位，而通过Group可以将不同的path进�
             android:pathData="
             M 20 20
             L 50 20 80 20"/>
-        <path
+        <pathData
             android:name="path2"
             android:strokeLineCap="round"
             android:strokeWidth="5"

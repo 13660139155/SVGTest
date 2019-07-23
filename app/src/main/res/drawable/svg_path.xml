@@ -9,7 +9,7 @@
     <group
         android:name="line">
 
-        <path
+        <pathData
             android:name="path1"
             android:strokeColor="@android:color/holo_green_dark"
             android:strokeWidth="5"
@@ -18,7 +18,7 @@
             M 20 20
             L 50 20 80 20"/>
 
-        <path
+        <pathData
             android:name="path2"
             android:strokeLineCap="round"
             android:strokeWidth="5"

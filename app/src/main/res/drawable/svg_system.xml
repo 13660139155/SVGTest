@@ -12,7 +12,7 @@
         android:pivotY="50"
         android:rotation="0">
 
-        <path
+        <pathData
             android:name="path_sun"
             android:layout_width="match_parent"
             android:fillColor="@android:color/holo_blue_light"
@@ -27,7 +27,7 @@
             android:pivotY="50"
             android:rotation="0">
 
-            <path
+            <pathData
                 android:name="path_earth"
                 android:fillColor="@android:color/holo_orange_dark"
                 android:pathData="
@@ -37,7 +37,7 @@
 
             <group>
 
-                <path
+                <pathData
                     android:fillColor="@android:color/holo_green_dark"
                     android:pathData="
                     M 90 50
