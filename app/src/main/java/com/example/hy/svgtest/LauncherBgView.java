@@ -1,14 +1,11 @@
 package com.example.hy.svgtest;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PathMeasure;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,6 +14,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -36,12 +34,11 @@ import javax.xml.parsers.ParserConfigurationException;
  * 手写SVG图片
  * Created by 陈健宇 at 2019/7/23
  */
-public class SVGView extends View {
+public class LauncherBgView extends View {
 
     private static final int PARSER_SUCCESS = 0x000;
     private static final int PARSER_ERROR = 0x001;
     private static final int START_DRAW = 0x002;
-    private static final int END_DRAW = 0x003;
     private static final String WIDTH = "android:width";
     private static final String HEIGHT = "android:height";
     private static final String VIEWPORT_HEIGHT = "android:viewportHeight";
@@ -52,22 +49,17 @@ public class SVGView extends View {
     private static final String STROKE_COLOR = "android:strokeColor";
     private static final String STROKE_WIDTH = "android:strokeWidth";
 
-    private final static String TAG = SVGView.class.getSimpleName();
+    private final static String TAG = LauncherBgView.class.getSimpleName();
 
     private int mSvgResId = R.raw.ic_launcher_background;
     private List<PathData> mPathDataList;
-    private int mCurPathDataIndex = 0;
-    private float mCurPathDataIndexProcess = 0;
-    private float mPrePathDataIndexProcess = 0;
+    private float mCurPathDataIndex = 0;
     private RectF mSvgRealSize;
     private float mSvgWidth, mSvgHeight;
     private Paint mSvgPaint;
-    private Path mSvgPath;
-    private PathMeasure mPathMeasure;
     private ValueAnimator mValueAnimator;
 
     private Handler mHandler = new Handler(Looper.getMainLooper()){
-
 
         @Override
         public void handleMessage(Message msg) {
@@ -81,10 +73,8 @@ public class SVGView extends View {
                     break;
                 case START_DRAW:
                     Log.d(TAG, "开始绘制");
-                    invalidate();
-                    break;
-                case END_DRAW:
-                    Log.d(TAG, "结束绘制");
+                    mValueAnimator.setFloatValues(0, mPathDataList.size());
+                    mValueAnimator.start();
                     break;
                 default:
                     break;
@@ -92,17 +82,17 @@ public class SVGView extends View {
         }
     };
 
-    public SVGView(Context context) {
+    public LauncherBgView(Context context) {
         super(context);
         init();
     }
 
-    public SVGView(Context context, AttributeSet attrs) {
+    public LauncherBgView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public SVGView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public LauncherBgView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -112,63 +102,53 @@ public class SVGView extends View {
         mSvgRealSize = new RectF();
 
         mSvgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mSvgPath = new Path();
-        mPathMeasure = new PathMeasure();
 
         mValueAnimator = ValueAnimator.ofFloat(0);
         mValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                mCurPathDataIndexProcess = (float) animation.getAnimatedValue();
-                invalidate();
+                mCurPathDataIndex = (float) animation.getAnimatedValue();
+                postInvalidate();
             }
         });
-        mValueAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mCurPathDataIndex++;
-                mCurPathDataIndexProcess = 0;
-                mPrePathDataIndexProcess = 0;
-                mHandler.sendEmptyMessage(START_DRAW);
-            }
-        });
+        mValueAnimator.setInterpolator(new LinearInterpolator());
+        mValueAnimator.setDuration(3000);
 
         new ParserThread().start();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if(mCurPathDataIndex < 0 || mCurPathDataIndex > mPathDataList.size()){
-            mHandler.sendEmptyMessage(END_DRAW);
-            return;
+        //放大画布
+        canvas.scale(getWidth() / mSvgRealSize.width(), getHeight() / mSvgRealSize.height());
+
+        //重绘
+        int realIndex = (int) mCurPathDataIndex;
+        for(int i = 0; i < realIndex; i++){
+            PathData path = mPathDataList.get(i);
+            setPaintAttr(path);
+            canvas.drawPath(path.pathData, mSvgPaint);
         }
-        PathData pathData = mPathDataList.get(mCurPathDataIndex);
+    }
+
+    private void setPaintAttr(PathData pathData) {
         mSvgPaint.reset();
-        if(mCurPathDataIndex == 0){
+        if(pathData.stokeColor < 0){
             mSvgPaint.setStyle(Paint.Style.FILL);
-            mSvgPaint.setColor(pathData.fillColor);
+            mSvgPaint.setColor(Color.parseColor("#26A69A"));
+
         }else {
             mSvgPaint.setStyle(Paint.Style.STROKE);
-            mSvgPaint.setStrokeWidth(pathData.stokeWidth);
+            mSvgPaint.setStrokeWidth(pathData.stokeWidth * 2);
             mSvgPaint.setColor(pathData.stokeColor);
         }
-        mPathMeasure.setPath(pathData.pathData, false);
-        mValueAnimator.setFloatValues(0, mPathMeasure.getLength());
-        mValueAnimator.start();
-        Log.d(TAG, "onDraw(), pathData = " + pathData + ", index = " + mCurPathDataIndex + ", process = " + mCurPathDataIndexProcess + ", size = " + mPathDataList.size());
-        mPathMeasure.getSegment(
-                mPrePathDataIndexProcess,
-                mCurPathDataIndexProcess - mPrePathDataIndexProcess,
-                mSvgPath,
-                true
-        );
-        mPrePathDataIndexProcess = mCurPathDataIndexProcess;
-        canvas.drawPath(mSvgPath, mSvgPaint);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         mHandler.removeCallbacksAndMessages(null);
+        mValueAnimator.cancel();
+        mValueAnimator = null;
         super.onDetachedFromWindow();
     }
 
@@ -209,14 +189,18 @@ public class SVGView extends View {
 
                 //获取<pathData>结点属性
                 Path pathData = PathParser.createPathFromPathData(pathNode.getAttribute(PATH_DATA));
-                int fillColor = Color.parseColor(pathNode.getAttribute(FILL_COLOR));
-                int stokeColor = -1;
-                float stokeWidth = -1;
-                if(i != 0){
+                int fillColor, stokeColor;
+                float stokeWidth;
+                try {
+                    fillColor = Color.parseColor(pathNode.getAttribute(FILL_COLOR));
                     stokeColor = Color.parseColor(pathNode.getAttribute(STROKE_COLOR));
-                    stokeWidth  = getRealSize(pathNode.getAttribute(STROKE_WIDTH));
+                    stokeWidth = getRealSize(pathNode.getAttribute(STROKE_WIDTH));
+                }catch (Exception e){
+                    e.printStackTrace();
+                    fillColor = Color.parseColor("#26A69A");
+                    stokeColor = -1;
+                    stokeWidth = 0.8f;
                 }
-
                 //计算出pathData的 rect
                 RectF rect = new RectF();
                 //计算出pathData的大小
@@ -228,6 +212,10 @@ public class SVGView extends View {
                 mSvgRealSize.bottom = Math.max(mSvgRealSize.bottom, rect.bottom);
 
                 pathDataList.add(new PathData(pathData, fillColor, stokeColor, stokeWidth));
+            }
+            if(pathDataList.isEmpty()){
+                mHandler.sendEmptyMessage(PARSER_ERROR);
+                return;
             }
             mPathDataList.clear();
             mPathDataList.addAll(pathDataList);
@@ -280,4 +268,5 @@ public class SVGView extends View {
         }
         return readSize;
     }
+
 }
