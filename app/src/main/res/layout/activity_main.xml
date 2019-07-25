@@ -8,35 +8,23 @@
     android:gravity="center_horizontal"
     tools:context=".MainActivity">
 
-    <!--<ImageView-->
-        <!--android:id="@+id/iv_path"-->
-        <!--android:layout_width="100dp"-->
-        <!--android:layout_height="100dp"-->
-        <!--android:src="@drawable/svg_path_anim" />-->
+    <ImageView
+        android:id="@+id/iv_path"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/svg_path_anim" />
 
-    <!--<ImageView-->
-        <!--android:id="@+id/iv_system"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:src="@drawable/svg_system_anim" />-->
-
-    <!--<ImageView-->
-        <!--android:id="@+id/iv_search"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:src="@drawable/svg_search_anim" />-->
-
-
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/iv_system"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:src="@drawable/svg_system_anim" />
 
-
-        <com.example.hy.svgtest.LauncherBgView
-            android:layout_width="100dp"
-            android:layout_height="100dp" />
-
-    </RelativeLayout>
+    <ImageView
+        android:id="@+id/iv_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/svg_search_anim" />
 
 
 </LinearLayout>
